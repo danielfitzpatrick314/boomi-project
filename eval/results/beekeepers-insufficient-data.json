@@ -1,0 +1,132 @@
+{
+  "case": {
+    "id": "beekeepers-insufficient-data",
+    "recall_number": "D-0620-2026",
+    "expected_verdict": "insufficient_data",
+    "why": "Recall initiated 2026-06-01, ~2.5 months before this eval was written. Firm has exactly one recall on file (this one), so there's no history to judge a pattern from, and a recall this recent has not had time to accumulate a meaningful FAERS adverse-event trail either way -- the honest answer is 'too early to tell', not 'isolated'."
+  },
+  "actual_verdict": "insufficient_data",
+  "pass": true,
+  "tool_calls": [
+    {
+      "name": "get_recall",
+      "arguments": {
+        "recall_number": "D-0620-2026"
+      },
+      "result": {
+        "found": true,
+        "recall": {
+          "status": "Ongoing",
+          "city": "Covina",
+          "state": "CA",
+          "country": "United States",
+          "classification": "Class I",
+          "openfda": {},
+          "product_type": "Drugs",
+          "event_id": "99145",
+          "recalling_firm": "BEEKEEPER'S NATURALS USA INC.",
+          "address_1": "440 N Barranca Ave # 9223",
+          "address_2": "N/A",
+          "postal_code": "91723-1722",
+          "voluntary_mandated": "Voluntary: Firm initiated",
+          "initial_firm_notification": "Letter",
+          "distribution_pattern": "Nationwide within the United States.",
+          "recall_number": "D-0620-2026",
+          "product_description": "BEEKEEPER'S NATURALS Saline Nasal Spray, Sinus Congestion Rinse, Made with Propolis + Xylitol, 1 FL OZ (30 mL) per bottle, Manufactured For:  Beekeeper's Naturals USA Inc., Covina, CA 91789.",
+          "product_quantity": "1680 bottles",
+          "reason_for_recall": "Microbial Contamination of Non-Sterile Products",
+          "recall_initiation_date": "20260601",
+          "center_classification_date": "20260624",
+          "report_date": "20260617",
+          "code_info": "Lot #: 5950, Exp. Date 02/2028"
+        }
+      }
+    },
+    {
+      "name": "search_recalls_by_firm",
+      "arguments": {
+        "firm_name": "Beekeeper's Naturals USA Inc."
+      },
+      "result": {
+        "total": 1,
+        "recalls": [
+          {
+            "recall_number": "D-0620-2026",
+            "status": "Ongoing",
+            "classification": "Class I",
+            "recalling_firm": "BEEKEEPER'S NATURALS USA INC.",
+            "product_description": "BEEKEEPER'S NATURALS Saline Nasal Spray, Sinus Congestion Rinse, Made with Propolis + Xylitol, 1 FL OZ (30 mL) per bottle, Manufactured For:  Beekeeper's Naturals USA Inc., Covina, CA 91789.",
+            "reason_for_recall": "Microbial Contamination of Non-Sterile Products",
+            "recall_initiation_date": "20260601",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide within the United States."
+          }
+        ]
+      }
+    },
+    {
+      "name": "find_related_products",
+      "arguments": {
+        "recall_number": "D-0620-2026"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-0620-2026",
+        "recalled_product_resolved": false,
+        "ingredient_used_for_cross_reference": "BEEKEEPER'S NATURALS Saline Nasal Spray",
+        "same_manufacturer": [
+          {
+            "name": "Propolis Cooling Relief Lemon Cough Drops",
+            "generic_name": "menthol, unspecified form",
+            "manufacturer": "Beekeeper's Naturals USA Inc",
+            "dosage_form": "LOZENGE"
+          }
+        ],
+        "same_ingredient": [],
+        "caveat": "Based on the FDA's current NDC directory, which only lists actively-marketed products -- older, discontinued, or OTC-monograph products (common among older recalls) are often missing entirely, so an empty or short list here does not mean nothing else is at risk, only that nothing else showed up in this directory. Also, 'same manufacturer' here means same NDC labeler (the marketing/distribution company on file), which is not always the same as the physical manufacturing site -- a contract manufacturer's facility issue could affect other labelers' products that this search would not surface. (matched by guessing 'BEEKEEPER'S NATURALS Saline Nasal Spray' from the recall text, not a confirmed active ingredient -- the recalled product's own NDC record wasn't found)"
+      }
+    },
+    {
+      "name": "find_related_adverse_events",
+      "arguments": {
+        "recall_number": "D-0620-2026"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-0620-2026",
+        "method": "manufacturer_name",
+        "confidence": "low",
+        "caveat": "No NDC or product name match was available, so this falls back to manufacturer name. openFDA's manufacturer_name field on adverse-event records is known to overcount -- it associates every manufacturer ever linked to an ingredient/NDC with the event, not just the reporting company. Treat this count as a weak, likely-inflated signal, not evidence. It is also punctuation-sensitive (exact match only), so a genuine 0 here can mean 'no events' or just 'punctuation mismatch' -- not fully disambiguated.",
+        "query_value": "BEEKEEPER'S NATURALS USA INC.",
+        "total_events": 0,
+        "sample_events": []
+      }
+    }
+  ],
+  "final_json": {
+    "recall_number": "D-0620-2026",
+    "verdict": "insufficient_data",
+    "recommended_action": "Handle this as a standard Class I recall response now (confirm retrieval of all 1,680 affected bottles of Lot 5950 and notify distributors and customers), but revisit the manufacturer track record in 6 to 12 months since there is not yet enough history to call this isolated or systemic.",
+    "summary": "Beekeeper's Naturals USA Inc. voluntarily recalled one lot of 1,680 bottles of its Saline Nasal Spray Sinus Congestion Rinse due to microbial contamination of a non-sterile product, classified Class I and initiated June 1, 2026. This is the only recall on record for this firm, so there is no history to show whether this is a one-time event or part of a broader quality pattern. No adverse events could be reliably linked to this product; the only data available came from a manufacturer-name search, which is known to be unreliable and returned zero events, so this is inconclusive rather than reassuring.",
+    "evidence": [
+      "Recall D-0620-2026 is classified Class I, initiated 2026-06-01, with the stated reason being microbial contamination of a non-sterile product, affecting 1,680 bottles of Lot 5950, expiration 02/2028, distributed nationwide.",
+      "A check of this firm's full recall history found only this single recall on record, so there is no prior pattern to compare against.",
+      "The only adverse-event search that could be run relied on manufacturer name rather than a specific product or ingredient match; this method is known to be low confidence and unreliable, and it returned zero events, which cannot be treated as reassuring given its limitations.",
+      "A search of currently marketed products from this firm surfaced one other product, Propolis Cooling Relief Lemon Cough Drops, a lozenge, but no other products sharing the recalled nasal spray formulation or active ingredient were found in the current product directory."
+    ],
+    "related_products": [
+      {
+        "name": "Propolis Cooling Relief Lemon Cough Drops",
+        "manufacturer": "Beekeeper's Naturals USA Inc",
+        "relation": "same_manufacturer",
+        "reason": "Made by the same firm as the recalled nasal spray, so it shares the same corporate quality oversight even though it is a different dosage form and likely a different production line."
+      }
+    ],
+    "open_questions": [
+      "Was the contamination traced to a specific raw material, water source, or production step, and does that process also feed the cough drop product line or other products not currently listed in the marketed-product directory?",
+      "Does this firm use a contract manufacturer for the nasal spray, and if so, should other brands made at that same physical facility be checked, since the product search only reflects the labeler of record and not necessarily the manufacturing site?",
+      "Since this is the firm's only recall and it is very recent, have any consumer complaints or illness reports come in through channels outside the FDA adverse-event database that would change the urgency of this case?"
+    ]
+  },
+  "final_text_raw": "{\n  \"recall_number\": \"D-0620-2026\",\n  \"verdict\": \"insufficient_data\",\n  \"recommended_action\": \"Handle this as a standard Class I recall response now (confirm retrieval of all 1,680 affected bottles of Lot 5950 and notify distributors and customers), but revisit the manufacturer track record in 6 to 12 months since there is not yet enough history to call this isolated or systemic.\",\n  \"summary\": \"Beekeeper's Naturals USA Inc. voluntarily recalled one lot of 1,680 bottles of its Saline Nasal Spray Sinus Congestion Rinse due to microbial contamination of a non-sterile product, classified Class I and initiated June 1, 2026. This is the only recall on record for this firm, so there is no history to show whether this is a one-time event or part of a broader quality pattern. No adverse events could be reliably linked to this product; the only data available came from a manufacturer-name search, which is known to be unreliable and returned zero events, so this is inconclusive rather than reassuring.\",\n  \"evidence\": [\n    \"Recall D-0620-2026 is classified Class I, initiated 2026-06-01, with the stated reason being microbial contamination of a non-sterile product, affecting 1,680 bottles of Lot 5950, expiration 02/2028, distributed nationwide.\",\n    \"A check of this firm's full recall history found only this single recall on record, so there is no prior pattern to compare against.\",\n    \"The only adverse-event search that could be run relied on manufacturer name rather than a specific product or ingredient match; this method is known to be low confidence and unreliable, and it returned zero events, which cannot be treated as reassuring given its limitations.\",\n    \"A search of currently marketed products from this firm surfaced one other product, Propolis Cooling Relief Lemon Cough Drops, a lozenge, but no other products sharing the recalled nasal spray formulation or active ingredient were found in the current product directory.\"\n  ],\n  \"related_products\": [\n    {\n      \"name\": \"Propolis Cooling Relief Lemon Cough Drops\",\n      \"manufacturer\": \"Beekeeper's Naturals USA Inc\",\n      \"relation\": \"same_manufacturer\",\n      \"reason\": \"Made by the same firm as the recalled nasal spray, so it shares the same corporate quality oversight even though it is a different dosage form and likely a different production line.\"\n    }\n  ],\n  \"open_questions\": [\n    \"Was the contamination traced to a specific raw material, water source, or production step, and does that process also feed the cough drop product line or other products not currently listed in the marketed-product directory?\",\n    \"Does this firm use a contract manufacturer for the nasal spray, and if so, should other brands made at that same physical facility be checked, since the product search only reflects the labeler of record and not necessarily the manufacturing site?\",\n    \"Since this is the firm's only recall and it is very recent, have any consumer complaints or illness reports come in through channels outside the FDA adverse-event database that would change the urgency of this case?\"\n  ]\n}"
+}

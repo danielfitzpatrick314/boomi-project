@@ -1,0 +1,119 @@
+{
+  "case": {
+    "id": "nanomaterials-isolated",
+    "recall_number": "D-0455-2023",
+    "expected_verdict": "isolated",
+    "why": "Nanomaterials Discovery Corporation has exactly one recall on file, ever (chemical contamination of a hand sanitizer). No firm history pattern, and the product has no NDC/name match in FAERS."
+  },
+  "actual_verdict": "isolated",
+  "pass": true,
+  "tool_calls": [
+    {
+      "name": "get_recall",
+      "arguments": {
+        "recall_number": "D-0455-2023"
+      },
+      "result": {
+        "found": true,
+        "recall": {
+          "status": "Ongoing",
+          "city": "Seattle",
+          "state": "WA",
+          "country": "United States",
+          "classification": "Class I",
+          "openfda": {},
+          "product_type": "Drugs",
+          "event_id": "91714",
+          "recalling_firm": "Nanomaterials Discovery Corporation",
+          "address_1": "14419 Greenwood Ave N",
+          "address_2": "Suite A, #424",
+          "postal_code": "98133-6865",
+          "voluntary_mandated": "Voluntary: Firm initiated",
+          "initial_firm_notification": "Letter",
+          "distribution_pattern": "Nationwide in the USA",
+          "recall_number": "D-0455-2023",
+          "product_description": "Snowy Range Blue Alcohol Antiseptic 80% Topical Solution Hand Sanitizer Non-Sterile Solution, 4fl. oz. [118mL], Distributed by Reliable Products, LLC, Cheyenne, WY 82003, NDC 75288-100-04.",
+          "product_quantity": "500 bottles",
+          "reason_for_recall": "Chemical Contamination: FDA analysis found the product to contain methanol, acetaldehyde, and acetal above the limits.",
+          "recall_initiation_date": "20230214",
+          "center_classification_date": "20230309",
+          "report_date": "20230315",
+          "code_info": "All Lots",
+          "more_code_info": ""
+        }
+      }
+    },
+    {
+      "name": "search_recalls_by_firm",
+      "arguments": {
+        "firm_name": "Nanomaterials Discovery Corporation"
+      },
+      "result": {
+        "total": 1,
+        "recalls": [
+          {
+            "recall_number": "D-0455-2023",
+            "status": "Ongoing",
+            "classification": "Class I",
+            "recalling_firm": "Nanomaterials Discovery Corporation",
+            "product_description": "Snowy Range Blue Alcohol Antiseptic 80% Topical Solution Hand Sanitizer Non-Sterile Solution, 4fl. oz. [118mL], Distributed by Reliable Products, LLC, Cheyenne, WY 82003, NDC 75288-100-04.",
+            "reason_for_recall": "Chemical Contamination: FDA analysis found the product to contain methanol, acetaldehyde, and acetal above the limits.",
+            "recall_initiation_date": "20230214",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA"
+          }
+        ]
+      }
+    },
+    {
+      "name": "find_related_products",
+      "arguments": {
+        "recall_number": "D-0455-2023"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-0455-2023",
+        "recalled_product_resolved": false,
+        "ingredient_used_for_cross_reference": "Snowy Range Blue Alcohol Antiseptic 80% Topical Solution Hand Sanitizer Non-Sterile Solution",
+        "same_manufacturer": [],
+        "same_ingredient": [],
+        "caveat": "Based on the FDA's current NDC directory, which only lists actively-marketed products -- older, discontinued, or OTC-monograph products (common among older recalls) are often missing entirely, so an empty or short list here does not mean nothing else is at risk, only that nothing else showed up in this directory. Also, 'same manufacturer' here means same NDC labeler (the marketing/distribution company on file), which is not always the same as the physical manufacturing site -- a contract manufacturer's facility issue could affect other labelers' products that this search would not surface. (matched by guessing 'Snowy Range Blue Alcohol Antiseptic 80% Topical Solution Hand Sanitizer Non-Sterile Solution' from the recall text, not a confirmed active ingredient -- the recalled product's own NDC record wasn't found)"
+      }
+    },
+    {
+      "name": "find_related_adverse_events",
+      "arguments": {
+        "recall_number": "D-0455-2023"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-0455-2023",
+        "method": "manufacturer_name",
+        "confidence": "low",
+        "caveat": "No NDC or product name match was available, so this falls back to manufacturer name. openFDA's manufacturer_name field on adverse-event records is known to overcount -- it associates every manufacturer ever linked to an ingredient/NDC with the event, not just the reporting company. Treat this count as a weak, likely-inflated signal, not evidence. It is also punctuation-sensitive (exact match only), so a genuine 0 here can mean 'no events' or just 'punctuation mismatch' -- not fully disambiguated.",
+        "query_value": "Nanomaterials Discovery Corporation",
+        "total_events": 0,
+        "sample_events": []
+      }
+    }
+  ],
+  "final_json": {
+    "recall_number": "D-0455-2023",
+    "verdict": "isolated",
+    "recommended_action": "Proceed with standard Class I recall closure procedures (confirm removal of all 500 distributed bottles and retailer/consumer notification); no further escalation of the manufacturer or ingredient is warranted based on currently available data.",
+    "summary": "This is a Class I recall of \"Snowy Range Blue\" hand sanitizer made by Nanomaterials Discovery Corporation (distributed by Reliable Products, LLC), initiated February 14, 2023, due to FDA lab testing finding methanol, acetaldehyde, and acetal above safe limits -- a serious chemical contamination issue typical of the hand-sanitizer manufacturing problems seen industry-wide in recent years. This is the only recall on record for this firm, no adverse event reports could be meaningfully tied to this specific product, and no other currently-marketed products (from this firm or sharing this formulation) turned up in the FDA's active product directory. Taken together, the data supports treating this as an isolated incident rather than part of a broader pattern, though some data gaps limit certainty.",
+    "evidence": [
+      "Recall D-0455-2023: Class I, initiated 2023-02-14, 500 bottles distributed nationwide, reason: methanol/acetaldehyde/acetal above allowable limits.",
+      "Firm history check found exactly one recall on record for Nanomaterials Discovery Corporation -- this incident -- with no prior or subsequent recalls to suggest a repeating pattern.",
+      "A search for adverse events linked to this product returned zero reports, and the only available matching method (by manufacturer name) is explicitly flagged as low-confidence and prone to overcounting, so this null result should not be read as strong reassurance either way.",
+      "A search of the FDA's current directory of marketed drug products found no other products listed under this manufacturer and no other products sharing this hand-sanitizer formulation, though the tool itself notes this directory often omits older or discontinued OTC products."
+    ],
+    "related_products": [],
+    "open_questions": [
+      "Is Nanomaterials Discovery Corporation a contract manufacturer supplying other labelers/distributors besides Reliable Products, LLC? The current search only looks at the labeler on file, so a shared physical manufacturing site issue affecting other brands would not be visible in this data.",
+      "Was the methanol contamination traced to a specific raw-material (denatured alcohol) supplier, and does that supplier feed other hand sanitizer brands currently on the market? This would be the key follow-up to identify true downstream risk beyond this one product.",
+      "Given the near-total absence of adverse event data tied to this product, is that because none occurred, or because hand sanitizer adverse events are simply underreported to FAERS relative to prescription drugs? This affects how much weight to put on the 'no adverse events' finding."
+    ]
+  },
+  "final_text_raw": "{\n  \"recall_number\": \"D-0455-2023\",\n  \"verdict\": \"isolated\",\n  \"recommended_action\": \"Proceed with standard Class I recall closure procedures (confirm removal of all 500 distributed bottles and retailer/consumer notification); no further escalation of the manufacturer or ingredient is warranted based on currently available data.\",\n  \"summary\": \"This is a Class I recall of \\\"Snowy Range Blue\\\" hand sanitizer made by Nanomaterials Discovery Corporation (distributed by Reliable Products, LLC), initiated February 14, 2023, due to FDA lab testing finding methanol, acetaldehyde, and acetal above safe limits -- a serious chemical contamination issue typical of the hand-sanitizer manufacturing problems seen industry-wide in recent years. This is the only recall on record for this firm, no adverse event reports could be meaningfully tied to this specific product, and no other currently-marketed products (from this firm or sharing this formulation) turned up in the FDA's active product directory. Taken together, the data supports treating this as an isolated incident rather than part of a broader pattern, though some data gaps limit certainty.\",\n  \"evidence\": [\n    \"Recall D-0455-2023: Class I, initiated 2023-02-14, 500 bottles distributed nationwide, reason: methanol/acetaldehyde/acetal above allowable limits.\",\n    \"Firm history check found exactly one recall on record for Nanomaterials Discovery Corporation -- this incident -- with no prior or subsequent recalls to suggest a repeating pattern.\",\n    \"A search for adverse events linked to this product returned zero reports, and the only available matching method (by manufacturer name) is explicitly flagged as low-confidence and prone to overcounting, so this null result should not be read as strong reassurance either way.\",\n    \"A search of the FDA's current directory of marketed drug products found no other products listed under this manufacturer and no other products sharing this hand-sanitizer formulation, though the tool itself notes this directory often omits older or discontinued OTC products.\"\n  ],\n  \"related_products\": [],\n  \"open_questions\": [\n    \"Is Nanomaterials Discovery Corporation a contract manufacturer supplying other labelers/distributors besides Reliable Products, LLC? The current search only looks at the labeler on file, so a shared physical manufacturing site issue affecting other brands would not be visible in this data.\",\n    \"Was the methanol contamination traced to a specific raw-material (denatured alcohol) supplier, and does that supplier feed other hand sanitizer brands currently on the market? This would be the key follow-up to identify true downstream risk beyond this one product.\",\n    \"Given the near-total absence of adverse event data tied to this product, is that because none occurred, or because hand sanitizer adverse events are simply underreported to FAERS relative to prescription drugs? This affects how much weight to put on the 'no adverse events' finding.\"\n  ]\n}"
+}

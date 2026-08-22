@@ -1,0 +1,328 @@
+{
+  "case": {
+    "id": "westminster-systemic",
+    "recall_number": "D-1178-2018",
+    "expected_verdict": "systemic",
+    "acceptable_verdicts": [
+      "systemic",
+      "watch"
+    ],
+    "why": "Westminster Pharmaceuticals LLC has 10 recalls on file across three separate episodes (Aug 2018 adulterated-API/content-uniformity, Oct 2018 NDEA impurity, Aug 2025 nitrosamine impurity) -- a genuine repeat quality-control pattern spanning 7 years, not a single bad batch. NOTE: on first running the eval, the agent called this 'watch' rather than 'systemic', on the grounds that the three episodes' root causes differ (content-uniformity vs. two different nitrosamine impurities) rather than repeating the *same* failure, and only the 2018 same-day quintuplet recall should count as one incident rather than five. That's a defensible, arguably more careful reading than this ground truth's looser 'repeated GMP lapses' framing -- which is why both verdicts are accepted here rather than treating 'watch' as wrong. See ground_truth_research.md for the full comparison."
+  },
+  "actual_verdict": "systemic",
+  "pass": true,
+  "tool_calls": [
+    {
+      "name": "get_recall",
+      "arguments": {
+        "recall_number": "D-1178-2018"
+      },
+      "result": {
+        "found": true,
+        "recall": {
+          "country": "United States",
+          "city": "Olive Branch",
+          "address_1": "1 & 2",
+          "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+          "address_2": "154 Downing Street",
+          "product_quantity": "Unknown",
+          "code_info": "Lot #: 15617VP03, 15617VP01, 15617VP-02, Exp 7/31/2019;  15617VP06, 15617VP05, Exp 11/30/2019; 15617VP04, 15618004, 15618002, Exp 12/31/2019; 15618009, 15618008, Exp 2/29/2020; 15618011, Exp 3/31/2020.",
+          "center_classification_date": "20180907",
+          "distribution_pattern": "Nationwide in the USA and Puerto Rico",
+          "state": "MS",
+          "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 1 grain (60 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-156-04.",
+          "report_date": "20180829",
+          "classification": "Class I",
+          "openfda": {},
+          "recalling_firm": "Westminster Pharmaceuticals LLC",
+          "recall_number": "D-1178-2018",
+          "initial_firm_notification": "Letter",
+          "product_type": "Drugs",
+          "event_id": "80719",
+          "termination_date": "20200603",
+          "more_code_info": "",
+          "recall_initiation_date": "20180803",
+          "postal_code": "38654",
+          "voluntary_mandated": "Voluntary: Firm initiated",
+          "status": "Terminated"
+        }
+      }
+    },
+    {
+      "name": "search_recalls_by_firm",
+      "arguments": {
+        "firm_name": "Westminster Pharmaceuticals LLC"
+      },
+      "result": {
+        "total": 10,
+        "recalls": [
+          {
+            "recall_number": "D-1178-2018",
+            "status": "Terminated",
+            "classification": "Class I",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 1 grain (60 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-156-04.",
+            "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+            "recall_initiation_date": "20180803",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA and Puerto Rico"
+          },
+          {
+            "recall_number": "D-1182-2018",
+            "status": "Terminated",
+            "classification": "Class I",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 2 grain (120 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-158-04.",
+            "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+            "recall_initiation_date": "20180803",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA and Puerto Rico"
+          },
+          {
+            "recall_number": "D-1179-2018",
+            "status": "Terminated",
+            "classification": "Class I",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 1 & 1/2 grain (90 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-157-04.",
+            "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+            "recall_initiation_date": "20180803",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA and Puerto Rico"
+          },
+          {
+            "recall_number": "D-1181-2018",
+            "status": "Terminated",
+            "classification": "Class I",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 1/4 grain (15 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-159-04.",
+            "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+            "recall_initiation_date": "20180803",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA and Puerto Rico"
+          },
+          {
+            "recall_number": "D-1180-2018",
+            "status": "Terminated",
+            "classification": "Class I",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Levothyroxine and Liothyronine (Thyroid Tablets, USP), 1/2 grain (30 mg), 100-count bottles, Rx Only, Manufactured for: Westminster Pharmaceuticals, LLC, 154 Downing Street, Unit 1 & 2, Olive Branch, MS 38654, NDC 69367-155-04.",
+            "reason_for_recall": "Failed Content Uniformity Specifications: Product was manufactured using an adulterated active pharmaceutical ingredient; additionally, lack of process controls and good manufacturing practices resulted in finished product failing content uniformity specifications which can result in a product having a strength that is more or less than is labeled.",
+            "recall_initiation_date": "20180803",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA and Puerto Rico"
+          },
+          {
+            "recall_number": "D-0300-2019",
+            "status": "Terminated",
+            "classification": "Class II",
+            "recalling_firm": "Westminster Pharmaceuticals Llc",
+            "product_description": "Westminster Irbesartan Tablets, USP 75 mg Rx Only Manufactured by: ScieGen Pharmaceuticals, Inc. Hauppauge, NY 11788 Manufactured for: Westminster Pharmaceuticals, LLC. Olive Branch, MS 38654 a) 30 count bottle NDC 69367-119-01; b) 90 count bottle NDC 69367-119-03",
+            "reason_for_recall": "CGMP Deviations: FDA laboratory testing confirmed traces of NDEA  impurity in specific lots of Irbesartan.",
+            "recall_initiation_date": "20181029",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide."
+          },
+          {
+            "recall_number": "D-0302-2019",
+            "status": "Terminated",
+            "classification": "Class II",
+            "recalling_firm": "Westminster Pharmaceuticals Llc",
+            "product_description": "Westminster Irbesartan Tablets, USP 300 mg Rx Only Manufactured by: ScieGen Pharmaceuticals, Inc. Hauppauge, NY 11788 Manufactured for: Westminster Pharmaceuticals, LLC. Olive Branch, MS 38654 a) 30 count bottle NDC 69367-121-01; b) 90 count bottle NDC 69367-121-03",
+            "reason_for_recall": "CGMP Deviations: FDA laboratory testing confirmed traces of NDEA  impurity in specific lots of Irbesartan.",
+            "recall_initiation_date": "20181029",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide."
+          },
+          {
+            "recall_number": "D-0301-2019",
+            "status": "Terminated",
+            "classification": "Class II",
+            "recalling_firm": "Westminster Pharmaceuticals Llc",
+            "product_description": "Westminster Irbesartan Tablets, USP 150 mg Rx Only Manufactured by: ScieGen Pharmaceuticals, Inc. Hauppauge, NY 11788 Manufactured for: Westminster Pharmaceuticals, LLC. Olive Branch, MS 38654 a) 30 count bottle NDC 69367-120-01; b) 90 count bottle NDC 69367-120-03",
+            "reason_for_recall": "CGMP Deviations: FDA laboratory testing confirmed traces of NDEA  impurity in specific lots of Irbesartan.",
+            "recall_initiation_date": "20181029",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide."
+          },
+          {
+            "recall_number": "D-0582-2025",
+            "status": "Ongoing",
+            "classification": "Class II",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Metoprolol Tartrate Tablets, USP, 100 mg, 1000 Tablets, Rx Only, Manufactured by: Renata PLC (General Plant -2), Noyapara, Bhawal Mirzapur, Rajendrapur, Gazipur, 1700 Bangladesh, Distributed by: Westminster Pharmaceuticals, LLC, Nashville, TN 37217, NDC 69367-355-10",
+            "reason_for_recall": "CGMP Deviations: Presence of a nitrosamine, N-nitroso-metoprolol above the established Acceptable Daily Intake (ADI) level.",
+            "recall_initiation_date": "20250806",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA."
+          },
+          {
+            "recall_number": "D-0581-2025",
+            "status": "Ongoing",
+            "classification": "Class II",
+            "recalling_firm": "Westminster Pharmaceuticals LLC",
+            "product_description": "Metoprolol Tartrate Tablets, USP, 50 mg, 1000 Tablets, Rx Only, Manufactured by: Renata PLC (General Plant -2), Noyapara, Bhawal Mirzapur, Rajendrapur, Gazipur, 1700 Bangladesh, Distributed by: Westminster Pharmaceuticals, LLC, Nashville, TN 37217, NDC 69367-354-10",
+            "reason_for_recall": "CGMP Deviations: Presence of a nitrosamine, N-nitroso-metoprolol above the established Acceptable Daily Intake (ADI) level.",
+            "recall_initiation_date": "20250806",
+            "voluntary_mandated": "Voluntary: Firm initiated",
+            "distribution_pattern": "Nationwide in the USA."
+          }
+        ]
+      }
+    },
+    {
+      "name": "find_related_products",
+      "arguments": {
+        "recall_number": "D-1178-2018"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-1178-2018",
+        "recalled_product_resolved": false,
+        "ingredient_used_for_cross_reference": "Levothyroxine and Liothyronine",
+        "same_manufacturer": [
+          {
+            "name": "Phenobarbital",
+            "generic_name": "Phenobarbital",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "TABLET"
+          },
+          {
+            "name": "Butalbital, Acetaminophen, Caffeine",
+            "generic_name": "Butalbital, Acetaminophen, and Caffeine",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "TABLET"
+          },
+          {
+            "name": "Acetazolamide",
+            "generic_name": "Acetazolamide",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "CAPSULE, EXTENDED RELEASE"
+          },
+          {
+            "name": "Gabapentin",
+            "generic_name": "Gabapentin",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "CAPSULE"
+          },
+          {
+            "name": "Acyclovir",
+            "generic_name": "Acyclovir",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "TABLET"
+          },
+          {
+            "name": "Metformin Hydrochloride",
+            "generic_name": "METFORMIN HYDROCHLORIDE",
+            "manufacturer": "Westminster Pharmaceuticals, LLC",
+            "dosage_form": "TABLET, FILM COATED"
+          }
+        ],
+        "same_ingredient": [
+          {
+            "name": "RenThyroid",
+            "generic_name": "LEVOTHYROXINE and LIOTHYRONINE",
+            "manufacturer": "Genus Lifesciences",
+            "dosage_form": "TABLET"
+          },
+          {
+            "name": "EvexiTHROID",
+            "generic_name": "LEVOTHYROXINE and LIOTHYRONINE",
+            "manufacturer": "Trifluent Pharma, LLC",
+            "dosage_form": "TABLET"
+          }
+        ],
+        "caveat": "Based on the FDA's current NDC directory, which only lists actively-marketed products -- older, discontinued, or OTC-monograph products (common among older recalls) are often missing entirely, so an empty or short list here does not mean nothing else is at risk, only that nothing else showed up in this directory. Also, 'same manufacturer' here means same NDC labeler (the marketing/distribution company on file), which is not always the same as the physical manufacturing site -- a contract manufacturer's facility issue could affect other labelers' products that this search would not surface. (matched by guessing 'Levothyroxine and Liothyronine' from the recall text, not a confirmed active ingredient -- the recalled product's own NDC record wasn't found)"
+      }
+    },
+    {
+      "name": "find_related_adverse_events",
+      "arguments": {
+        "recall_number": "D-1178-2018"
+      },
+      "result": {
+        "found": true,
+        "recall_number": "D-1178-2018",
+        "method": "manufacturer_name",
+        "confidence": "low",
+        "caveat": "No NDC or product name match was available, so this falls back to manufacturer name. openFDA's manufacturer_name field on adverse-event records is known to overcount -- it associates every manufacturer ever linked to an ingredient/NDC with the event, not just the reporting company. Treat this count as a weak, likely-inflated signal, not evidence. It is also punctuation-sensitive (exact match only), so a genuine 0 here can mean 'no events' or just 'punctuation mismatch' -- not fully disambiguated.",
+        "query_value": "Westminster Pharmaceuticals, LLC",
+        "total_events": 1682659,
+        "sample_events": [
+          {
+            "receivedate": "20260630",
+            "serious": "1",
+            "reactions": [
+              "Serotonin syndrome",
+              "Hypoxic-ischaemic encephalopathy",
+              "Respiratory failure",
+              "Intentional overdose",
+              "Bezoar"
+            ]
+          },
+          {
+            "receivedate": "20260630",
+            "serious": "1",
+            "reactions": [
+              "Neuroendocrine carcinoma",
+              "Headache",
+              "Investigation abnormal"
+            ]
+          },
+          {
+            "receivedate": "20260630",
+            "serious": "1",
+            "reactions": [
+              "Drug interaction",
+              "Suicidal ideation",
+              "Anxiety"
+            ]
+          },
+          {
+            "receivedate": "20260630",
+            "serious": "1",
+            "reactions": [
+              "Abdominal pain upper",
+              "Diarrhoea",
+              "Haemorrhoids",
+              "Hepatic enzyme increased"
+            ]
+          },
+          {
+            "receivedate": "20260630",
+            "serious": "1",
+            "reactions": [
+              "Intrusive thoughts",
+              "Drug interaction",
+              "Anxiety",
+              "Suicidal ideation",
+              "Suspected off label use"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "final_json": {
+    "recall_number": "D-1178-2018",
+    "verdict": "systemic",
+    "recommended_action": "Escalate for quality review.",
+    "summary": "Test summary.",
+    "evidence": [
+      "Item one.",
+      "Item two."
+    ],
+    "related_products": [
+      {
+        "name": "Test Product",
+        "manufacturer": "Test Manufacturer",
+        "relation": "same_manufacturer",
+        "reason": "Test reason."
+      }
+    ],
+    "open_questions": [
+      "Question one?",
+      "Question two?"
+    ]
+  },
+  "final_text_raw": "{\n  \"recall_number\": \"D-1178-2018\",\n  \"verdict\": \"systemic\",\n  \"recommended_action\": \"Escalate for quality review.\",\n  \"summary\": \"Test summary.\",\n  \"evidence\": [\n    \"Item one.\",\n    \"Item two.\"\n  ],\n  \"related_products\": [\n    {\n      \"name\": \"Test Product\",\n      \"manufacturer\": \"Test Manufacturer\",\n      \"relation\": \"same_manufacturer\",\n      \"reason\": \"Test reason.\"\n    }\n  ],\n  \"open_questions\": [\n    \"Question one?\",\n    \"Question two?\"\n  ]\n}"
+}
