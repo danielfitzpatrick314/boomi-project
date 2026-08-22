@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", ui-serif, Georgia, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
+
+  --color-bg: #f5f6f8;
+  --color-surface: #ffffff;
+  --color-border: #e2e4e9;
+  --color-border-hover: #c7cbd3;
+  --color-text: #191b20;
+  --color-text-dim: #565b64;
+  --color-text-faint: #8b909a;
+
+  --color-accent: #3760c9;
+  --color-accent-soft: #3760c914;
+
+  --color-isolated: #1f7a4d;
+  --color-isolated-soft: #1f7a4d14;
+  --color-watch: #9c6b08;
+  --color-watch-soft: #9c6b0814;
+  --color-systemic: #ad3527;
+  --color-systemic-soft: #ad352714;
+  --color-insufficient: #3a5f8a;
+  --color-insufficient-soft: #3a5f8a14;
+  --color-high: #c1590f;
+  --color-high-soft: #c1590f14;
+
+  --animate-breathe: breathe 3s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 0.45; }
+  50% { opacity: 1; }
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-thumb {
+  background: #00000022;
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00000038;
+}
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.serif {
+  font-family: var(--font-serif);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Tailwind v4's preflight doesn't restore the pointer cursor on buttons the
+   way v3 used to -- native <button> defaults to `cursor: default`. */
+button:not(:disabled) {
+  cursor: pointer;
+}
