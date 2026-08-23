@@ -31,14 +31,16 @@ Given a recall number (or a firm name), the agent:
 4. Tries to link the specific recalled product to FAERS adverse-event reports, using the most
    precise matching method available (NDC → generic name → brand name → manufacturer name),
    and is explicit about how much to trust whichever method actually worked.
-5. Returns a case brief: a verdict (`isolated | watch | systemic | insufficient_data`), a single
-   **recommended action** — the one line a busy manager reads if they read nothing else — a
-   **related-products list** (each entry clickable, kicking off a fresh investigation of that
-   manufacturer), plain-language supporting findings, and the couple of limitations that would
-   actually change the call. The step-by-step trace (which tools ran, what each returned, and
-   why) renders right underneath, expanded by default — the case brief is always what's on top,
-   but the full unfolding chain is visible below it for anyone watching along, not hidden behind
-   a click.
+5. Returns a case brief: a verdict (`isolated | watch | systemic | insufficient_data`), a
+   deterministic **severity gauge** (Low/Moderate/High/Critical — computed from the recall's own
+   FDA classification combined with the verdict, not model-generated, so it can't drift from
+   what's actually known), a single **recommended action** — the one line a busy manager reads
+   if they read nothing else — a **related-products list**, plain-language supporting findings,
+   and the couple of limitations that would actually change the call. The step-by-step trace
+   (which tools ran, what each returned, and why) renders right underneath, expanded by default —
+   the case brief is always what's on top, but the full unfolding chain is visible below it for
+   anyone watching along, not hidden behind a click. A **copy-report** button exports the whole
+   finding as Markdown for pasting into Slack, email, or a ticket.
 
 The output is written so nothing in it requires knowing this is an AI agent: no tool names, no
 internal field names, no hedge-everything academic tone. The system prompt explicitly forbids
@@ -48,6 +50,20 @@ parse. What they get instead is a real recall snapshot (firm, drug name, classif
 pulled directly from the recall record, not reconstructed from the model's prose, so it's never
 at the mercy of the LLM mistranscribing a firm name) plus a case brief written the way a person
 would write their own case notes.
+
+**Chasing a lead without leaving the tool.** Two follow-up actions off a finished finding, both
+deliberately *not* a straight-to-investigation shortcut, because either a firm or a product name
+can match more than one real recall:
+- Each related product has a **"check this product's recall history"** button — searches
+  openFDA by that specific product name, across any manufacturer, since a related product is
+  flagged only for sharing a manufacturer or ingredient with something recalled, not because it
+  has history of its own. Confirms or clears that signal instead of just re-searching the whole
+  firm.
+- The **Firm** search tab lists every recall on record for a firm before drilling into one, and
+  falls back to fuzzy substring matching when the exact name doesn't hit — openFDA stores
+  `"GlaxoSmithKline"` as one word, so typing it as three separate words (or misspelling it)
+  returns nothing on an exact match; the fallback searches per significant word and intersects
+  the results so a single coincidentally-shared word doesn't pull in an unrelated firm.
 
 ## Why this needed to be agentic
 
@@ -100,7 +116,8 @@ eval/
   cases.py                3 hand-researched ground-truth cases
   ground_truth_research.md   the raw openFDA queries used to establish each case's expected answer
   run_eval.py              runs the agent against all 3, writes full transcripts to eval/results/
-tests/                   18 tests against the live openFDA API (client + resolver + linkage logic)
+tests/                   27 tests: client/resolver/linkage logic against the live openFDA API,
+                           plus report-parsing and validation logic (no API calls)
 ```
 
 MCP is the tool-delivery layer: the agent has no direct access to openFDA, only to the 7 tools

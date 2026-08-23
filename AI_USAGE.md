@@ -318,3 +318,79 @@ substantial extended thinking by default, which I'd already noted once earlier i
 and didn't connect it to "large tool outputs plus real reasoning plausibly just takes a while"
 until asked to actually check. A plausible-sounding external explanation is still a guess if
 nothing was measured to support it over the boring internal one.
+
+**Firm search, and a real bug a major real-world firm exposed immediately.** Added a "Firm"
+search mode: type a firm name, get a list of its recalls, pick one to investigate -- deliberately
+not a straight shot into an investigation, since a firm name can match several recalls and
+guessing wrong silently would be worse than making the user pick. First real test of it was
+searching "Glaxo Smith Klein" (a plausible, near-correct spelling of a real Fortune 500
+pharma company) and getting zero results. Root cause: the search was an exact Lucene phrase
+match against `recalling_firm`, and openFDA stores the name as one word, `"GlaxoSmithKline"` --
+typing it as three separate words can't match regardless of spelling. Verified against the live
+API before building a fix: a bare wildcard (`recalling_firm:*glaxo*`) does match. Built a
+fallback that only fires when the exact match returns nothing: split the query into significant
+words, wildcard-search each one, and require a result to match *every* word (not just one) before
+including it -- tested this specifically because a single-word fallback let "Smith Drug Company"
+(a real, unrelated firm) score almost as high as genuine GlaxoSmithKline matches on fuzzy string
+similarity alone; word-intersection filters that out cleanly, confirmed by re-running the same
+search afterward and getting 12 results, all genuinely GlaxoSmithKline.
+
+**Reused that same fallback for product search, and it needed a second, different fix.** Added a
+"check this product's recall history" action on each related-product card -- these products are
+flagged only for sharing a manufacturer or ingredient with something recalled, not because they
+have history of their own, so this checks whether that signal is corroborated. Reused the same
+word-intersection fuzzy search built for firms, pointed at `product_description` instead of
+`recalling_firm`. First test ("Acetazolamide Extended-Release Capsules") returned skin cream and
+dietary supplements -- the word-filtering logic that worked for firm names doesn't transfer
+cleanly to product names, because generic dosage/packaging words ("capsules", "extended",
+"release") are common enough across *all* drug products that using them as a wildcard-search
+anchor is pure noise, not signal, the same failure mode as the `manufacturer_name` overcounting
+from early in this build, just in a new field. Fixed by extending the stopword list with common
+dosage-form/route/packaging terms; re-tested the same query afterward and got exactly the
+acetazolamide-only results expected.
+
+**A concurrency bug found by reading logs, not by reasoning about the code.** A user-reported
+timeout on a recall that had completed cleanly for me minutes earlier didn't fit any theory I had
+until I looked at the raw backend logs and found two separate agent loops running at the same
+time for the *identical* recall_number -- their per-turn logs interleaved, one turn taking 41
+seconds while the other was also mid-flight, both competing for the same event loop and Anthropic
+API capacity. I don't know the exact trigger (a genuine double-click, or `EventSource`'s
+own auto-reconnect-on-drop silently replaying the same request while the original run was still
+alive server-side are both plausible and I didn't chase down which), but rather than trying to
+eliminate every possible cause, added a server-side guard: a second concurrent request for the
+same query now gets an immediate, clear rejection instead of quietly starting a competing agent
+loop. Verified by firing two overlapping requests for the same recall directly with curl -- the
+second was rejected instantly, and the lock correctly released afterward so a retry worked
+normally. Also added the query to every turn's log line going forward, since untangling two
+interleaved runs from timestamp-only logs is exactly the kind of debugging tax that's cheap to
+avoid up front.
+
+**A "why is the feed stale" question that turned out not to be a bug at all.** Asked to explain
+why the recent-recalls sidebar never showed anything newer than 17 days old, I didn't want to
+repeat the earlier mistake of asserting an explanation without checking it. Fetched FDA.gov's own
+recall page directly and found a recall dated 2 days prior; then queried openFDA's raw enforcement
+endpoint with zero filters, sorted purely by date, and got the same 17-day-old recall as the
+single most recent entry in the *entire* database. That's decisive: openFDA's bulk data is
+genuinely running weeks behind FDA.gov's own announcements right now, not a bug in this app's
+query or sort logic. Said so plainly, with the receipts, rather than guessing at a fix for
+something that wasn't broken.
+
+**Severity gauge: a deliberately non-model-generated signal.** Added a Low/Moderate/High/Critical
+gauge to the finding card, computed from two things already trusted elsewhere in the build: the
+recall's own FDA classification and the verdict. Deliberately did *not* ask the model to rate
+severity itself -- a model-generated severity score would be one more thing that could drift
+from the actual evidence in the summary, and there's no need for it to be a judgment call when
+both inputs are already deterministic. The mapping (e.g. Class I + systemic = Critical) is a
+fixed lookup, explainable in one line next to the gauge, and testable independent of any live
+model call.
+
+**Rebuilding this into a real git history instead of one commit.** The repo had no version
+control for the entire build -- every change was a live file edit, never committed. Asked to
+push it to GitHub as more than a single dump, I organized the final code into commits by
+architectural layer (data client -> agent loop -> tests/eval -> web API -> frontend scaffold ->
+frontend UI -> docs) rather than trying to fake a literal chronological replay, which isn't
+possible from a single final-state snapshot without inventing history that didn't happen. Said so
+explicitly rather than let commit messages imply a day-by-day narrative that isn't real. Also
+caught and dropped three genuinely dead files while staging (`hero.png` from an abandoned design
+direction, plus the unused default Vite `react.svg`/`vite.svg`) by grepping for references before
+committing them, rather than shipping clutter just because it was sitting in the working tree.
