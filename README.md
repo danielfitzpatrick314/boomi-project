@@ -143,35 +143,36 @@ a dropped result.
 
 ## Setup
 
-Requires Python 3.11+.
+Requires Python 3.11+. Three steps, in order:
 
+**1.**
 ```bash
 ./setup.sh
 ```
 
-Creates the venv, installs dependencies, and copies `.env.example` to `.env` if it doesn't
-already exist. It cannot do the last step for you, though, and this is the one step every failure
-so far has come from: **open `.env` and set `ANTHROPIC_API_KEY` to a real key.** `.env.example`
-ships with every value blank on purpose (it's a template, not a real config), and `setup.sh` will
-tell you plainly if it's still blank when it finishes. Skipping this step now fails fast with one
-clear line (`ANTHROPIC_API_KEY is not set...`) instead of a buried async stack trace, but it still
-won't run without a real key either way.
+**2. Open `.env` and paste in the `ANTHROPIC_API_KEY` value from the submission email.**
+This step can't be scripted — `.env.example` ships with every value blank on purpose, so
+`./setup.sh` alone does not get you a working key, only the file to put one in. Nothing below
+this line runs without it.
 
-(No `setup.sh`, or prefer to see each step: `python3 -m venv .venv && source .venv/bin/activate
-&& pip install -r requirements.txt && cp .env.example .env`, then edit `.env` the same way.)
-
-### Web app (start here)
-
-This is the actual deliverable — a small React frontend that watches the agent investigate in
-real time, each tool call streaming in as it happens, followed by the verdict.
-
+**3.**
 ```bash
 ./run_web.sh
 ```
 
-One command, one terminal — starts the backend, installs frontend deps on first run, and starts
-the frontend, all from the repo root. Ctrl+C stops both cleanly (kills by port, not by PID, since
-uvicorn's `--reload` spawns a child process a naive PID-based kill would leave orphaned).
+> Skipped step 2? You'll get one clear line (`ANTHROPIC_API_KEY is not set...`) instead of a
+> buried stack trace, but it still won't run — go back and do step 2.
+>
+> No `setup.sh`, or prefer to see each step: `python3 -m venv .venv && source .venv/bin/activate
+> && pip install -r requirements.txt && cp .env.example .env`, then step 2 the same way.
+
+### Web app
+
+This is the actual deliverable — a small React frontend that watches the agent investigate in
+real time, each tool call streaming in as it happens, followed by the verdict. `./run_web.sh`
+(step 3 above) starts the backend, installs frontend deps on first run, and starts the frontend,
+all from one terminal. Ctrl+C stops both cleanly (kills by port, not by PID, since uvicorn's
+`--reload` spawns a child process a naive PID-based kill would leave orphaned).
 
 <details>
 <summary>Prefer two terminals (or no <code>run_web.sh</code>)?</summary>
