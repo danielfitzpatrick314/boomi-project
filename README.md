@@ -160,26 +160,10 @@ won't run without a real key either way.
 (No `setup.sh`, or prefer to see each step: `python3 -m venv .venv && source .venv/bin/activate
 && pip install -r requirements.txt && cp .env.example .env`, then edit `.env` the same way.)
 
-Run one investigation:
-```bash
-python scripts/run_investigation.py --recall-number D-1178-2018
-python scripts/run_investigation.py --firm "Westminster Pharmaceuticals"
-```
+### Web app (start here)
 
-Run the eval (3 cases, writes full transcripts to `eval/results/`):
-```bash
-cd eval && python run_eval.py
-```
-
-Run the tests (hits the live openFDA API, no key needed for this part):
-```bash
-pytest tests/ -v
-```
-
-### Web UI
-
-A small React frontend that watches the agent investigate in real time — each tool call
-streams in as it happens, followed by the verdict.
+This is the actual deliverable — a small React frontend that watches the agent investigate in
+real time, each tool call streaming in as it happens, followed by the verdict.
 
 ```bash
 # terminal 1 -- backend (from repo root, venv active, .env set as above)
@@ -205,14 +189,13 @@ top of the screen. Once the verdict lands, the case brief takes the status card'
 top and the (still-expanded) log stays right below it — collapsible if you want it out of the
 way, but visible unless you ask it not to be.
 
-Once a finding lands, its "Related products to watch" entries are clickable too: clicking one
-kicks off a *new* investigation of that product's manufacturer, so you can chase a lead (e.g.
-"does this other labeler using the same active ingredient have its own recall history?") without
-leaving the tool. That path exercises a real edge case worth knowing about: most clicks land on
-a manufacturer with no recall history at all, which isn't an error — the agent short-circuits to
-a clean "no FDA recall on record" finding rather than trying to force a recall-shaped answer onto
-data that has none. See AI_USAGE.md for how this surfaced as a real 14-minute hang before it was
-fixed.
+Once a finding lands, its "Related products to watch" entries are clickable too: each one checks
+whether *that specific product* has any recall history of its own, across any manufacturer — a
+related product is flagged only for sharing a manufacturer or ingredient with something that was
+recalled, not because it has history itself, so this either corroborates or clears that signal
+without leaving the tool. Same picker pattern as the Firm search tab: list what's on file, then
+pick a specific recall to drill into — most clicks turn up nothing, which isn't an error, it's the
+expected result for a "watch" item that's never actually had a problem.
 
 First visit shows a one-time "who's asking?" screen (pharmacist / researcher / other, with a
 free-text option) before the tool itself. This isn't cosmetic — each answer is persisted
@@ -242,6 +225,26 @@ actually true ("real reasoning, not a lookup") instead of implying anything past
 abnormal. A failed investigation still gets a one-click Retry button regardless of cause. Full
 diagnostic trail — including the wrong first diagnosis and how it got corrected — is in
 AI_USAGE.md.
+
+### CLI (no browser, fastest way to sanity-check the agent directly)
+
+Same `run_investigation` loop the web app calls, no servers or browser needed — useful for a
+quick direct check, and it's what the eval harness runs on.
+
+```bash
+python scripts/run_investigation.py --recall-number D-1178-2018
+python scripts/run_investigation.py --firm "Westminster Pharmaceuticals"
+```
+
+Run the eval (3 cases, writes full transcripts to `eval/results/`):
+```bash
+cd eval && python run_eval.py
+```
+
+Run the tests (hits the live openFDA API, no key needed for this part):
+```bash
+pytest tests/ -v
+```
 
 ## Evidence it does what I claim
 
