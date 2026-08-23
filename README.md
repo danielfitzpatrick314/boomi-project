@@ -189,58 +189,13 @@ cd frontend && npm install && npm run dev
 ```
 </details>
 
-Open the URL Vite prints (usually http://localhost:5173). The dev server proxies `/api/*` to
-the backend on port 8000. Click one of the three example chips for an instant real run, enter
-any recall number or firm name, or click any item in the right-hand "Recent recalls" feed (real,
-current recalls pulled from `/api/recent-recalls`, de-duped so a same-day multi-strength recall
-reads as one story, with the actual drug name as the headline — not just the firm — and a
-"search coverage" link out to real-time news results) to investigate that specific incident.
-
-While an investigation is running, a plain status card sits at the top — "Investigating {query}",
-the current step in one line, and an explicit "a summary will appear here" note — so it's always
-clear the tool is working even before the log below it says anything specific. The step-by-step
-log itself is expanded by default, right underneath, and keeps updating live: the point isn't to
-hide the process, it's to make sure the plain-language answer is never competing with it for the
-top of the screen. Once the verdict lands, the case brief takes the status card's place at the
-top and the (still-expanded) log stays right below it — collapsible if you want it out of the
-way, but visible unless you ask it not to be.
-
-Once a finding lands, its "Related products to watch" entries are clickable too: each one checks
-whether *that specific product* has any recall history of its own, across any manufacturer — a
-related product is flagged only for sharing a manufacturer or ingredient with something that was
-recalled, not because it has history itself, so this either corroborates or clears that signal
-without leaving the tool. Same picker pattern as the Firm search tab: list what's on file, then
-pick a specific recall to drill into — most clicks turn up nothing, which isn't an error, it's the
-expected result for a "watch" item that's never actually had a problem.
-
-First visit shows a one-time "who's asking?" screen (pharmacist / researcher / other, with a
-free-text option) before the tool itself. This isn't cosmetic — each answer is persisted
-server-side to `data/identifications.jsonl` via `POST /api/identify` (a real append-only log,
-inspectable directly or via `GET /api/identify/summary` for role counts), so it's actual usage
-data, not a UI gesture with nothing behind it. Remembered per-browser via localStorage so it
-doesn't nag on return visits.
-
-**On reliability.** A slow step and a genuinely stuck one used to look identical — static "..."
-dots either way, and a timeout that was, in an earlier pass, tuned from a guess rather than data.
-That guess was wrong: it assumed anything past ~60-90s must be stuck, and was cutting off
-investigations that were still legitimately working. Real fix came from instrumenting the agent
-loop itself (`agent/investigator.py` logs per-turn duration, token counts, and extended-thinking
-token counts) and reading the actual numbers: this model does substantial extended thinking by
-default, and a turn with real reasoning to do — weighing a verdict, deciding which related
-products are worth flagging — routinely takes 15-35 seconds on its own. A normal 5-turn
-investigation legitimately totals 60-90+ seconds; that's not a stall, it's the model thinking.
-Timeouts are now sized against that real data (120s per model call, 240s overall ceiling) instead
-of a guess, and the exact query that had been timing out completed cleanly afterward with a
-detailed, correct finding. The per-turn logging stays on permanently — it's genuinely useful
-observability, not just how this got diagnosed.
-
-The UI reflects the corrected picture too: a server-sent heartbeat every 3 seconds drives a live
-elapsed-time counter (so a real hang is still visually distinguishable from a working-but-slow
-step — the clock either keeps ticking or it doesn't), with reassurance copy that now says what's
-actually true ("real reasoning, not a lookup") instead of implying anything past a minute is
-abnormal. A failed investigation still gets a one-click Retry button regardless of cause. Full
-diagnostic trail — including the wrong first diagnosis and how it got corrected — is in
-AI_USAGE.md.
+Open the URL Vite prints (usually http://localhost:5173). Click an example chip, enter a recall
+number or firm name, or click an item in the "Recent recalls" feed to start. First visit asks a
+one-time "who's using this" question (persisted to `data/identifications.jsonl`, remembered
+locally after that). Everything the app actually shows you — the verdict, severity gauge,
+related-products drill-down, firm search — is covered under "What it does" above, not repeated
+here. Reliability details (timeouts, retries, how a stuck run is distinguished from a slow one)
+are in `AI_USAGE.md`.
 
 ### CLI (no browser, fastest way to sanity-check the agent directly)
 
