@@ -146,17 +146,19 @@ a dropped result.
 Requires Python 3.11+.
 
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
+./setup.sh
 ```
 
-**Before running anything below, open `.env` and set `ANTHROPIC_API_KEY` to a real key.**
-`.env.example` ships with every value blank on purpose (it's a template, not a real config) —
-`cp`-ing it alone does not get you a working key, it just gets you the file to edit. Skipping
-this step fails fast now with one clear line (`ANTHROPIC_API_KEY is not set...`) instead of a
-buried async stack trace, but it still won't run without a real key either way.
+Creates the venv, installs dependencies, and copies `.env.example` to `.env` if it doesn't
+already exist. It cannot do the last step for you, though, and this is the one step every failure
+so far has come from: **open `.env` and set `ANTHROPIC_API_KEY` to a real key.** `.env.example`
+ships with every value blank on purpose (it's a template, not a real config), and `setup.sh` will
+tell you plainly if it's still blank when it finishes. Skipping this step now fails fast with one
+clear line (`ANTHROPIC_API_KEY is not set...`) instead of a buried async stack trace, but it still
+won't run without a real key either way.
+
+(No `setup.sh`, or prefer to see each step: `python3 -m venv .venv && source .venv/bin/activate
+&& pip install -r requirements.txt && cp .env.example .env`, then edit `.env` the same way.)
 
 Run one investigation:
 ```bash
