@@ -323,6 +323,19 @@ async def run_investigation(
     on_tool_call=None,
 ) -> InvestigationTrace:
     """query: {"recall_number": "..."} or {"firm": "..."} -- becomes the user's opening message."""
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        # Without this check, a missing key surfaces as a three-level-deep
+        # ExceptionGroup from inside the MCP stdio client's task group, wrapping
+        # an AsyncAnthropic header-validation TypeError -- technically correct,
+        # but unreadable for anyone hitting it fresh off a clone/unzip. Fail
+        # immediately, before the MCP subprocess even spawns, with the one line
+        # that actually matters.
+        raise RuntimeError(
+            "ANTHROPIC_API_KEY is not set. Copy .env.example to .env and add your "
+            "own key (cp .env.example .env, then edit .env), and make sure it's "
+            "loaded (load_dotenv() in web/api.py, or `export ANTHROPIC_API_KEY=...` "
+            "before running scripts/run_investigation.py directly)."
+        )
     if "recall_number" in query:
         opening = f"Investigate recall {query['recall_number']}."
         query_label = query["recall_number"]

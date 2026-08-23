@@ -150,8 +150,13 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env
-# edit .env and set ANTHROPIC_API_KEY
 ```
+
+**Before running anything below, open `.env` and set `ANTHROPIC_API_KEY` to a real key.**
+`.env.example` ships with every value blank on purpose (it's a template, not a real config) —
+`cp`-ing it alone does not get you a working key, it just gets you the file to edit. Skipping
+this step fails fast now with one clear line (`ANTHROPIC_API_KEY is not set...`) instead of a
+buried async stack trace, but it still won't run without a real key either way.
 
 Run one investigation:
 ```bash
