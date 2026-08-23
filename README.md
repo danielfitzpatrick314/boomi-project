@@ -166,12 +166,27 @@ This is the actual deliverable — a small React frontend that watches the agent
 real time, each tool call streaming in as it happens, followed by the verdict.
 
 ```bash
-# terminal 1 -- backend (from repo root, venv active, .env set as above)
-cd src && uvicorn web.api:app --reload --port 8000
+./run_web.sh
+```
 
-# terminal 2 -- frontend
+One command, one terminal — starts the backend, installs frontend deps on first run, and starts
+the frontend, all from the repo root. Ctrl+C stops both cleanly (kills by port, not by PID, since
+uvicorn's `--reload` spawns a child process a naive PID-based kill would leave orphaned).
+
+<details>
+<summary>Prefer two terminals (or no <code>run_web.sh</code>)?</summary>
+
+Backend, from the repo root, venv active, `.env` set as above:
+```bash
+cd src && uvicorn web.api:app --reload --port 8000
+```
+
+Frontend, in a **separate terminal window** — this is not a continuation of the command above,
+it's a second long-running process that needs its own terminal:
+```bash
 cd frontend && npm install && npm run dev
 ```
+</details>
 
 Open the URL Vite prints (usually http://localhost:5173). The dev server proxies `/api/*` to
 the backend on port 8000. Click one of the three example chips for an instant real run, enter
